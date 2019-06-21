@@ -7,8 +7,8 @@ package org.luvx.common.query;
  * @Date: 2019/5/27 17:01
  */
 public interface Query<T> {
-    Order ASC_ORDER  = Order.ASC;
-    Order DESC_ORDER = Order.DESC;
+    Order ASC  = Order.ASC;
+    Order DESC = Order.DESC;
 
     Column RAND_COLUMN         = Column.RAND;
     Column ID_COLUMN           = Column.ID;
@@ -27,11 +27,14 @@ public interface Query<T> {
     enum Column {
         RAND("rand()"), ID, GMT_CREATE, GMT_MODIFIED;
         private String value;
+
         Column() {
         }
+
         Column(String value) {
             this.value = value;
         }
+
         @Override
         public String toString() {
             return value == null ? super.toString() : value;

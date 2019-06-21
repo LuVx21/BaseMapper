@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.jdbc.SQL;
+import org.luvx.common.base.BaseQueryEntity;
 import org.luvx.common.query.Query;
 import org.luvx.common.utils.ProviderUtils;
 
@@ -101,6 +102,38 @@ public class BaseSelectProvider extends BaseProvider {
         return sql.toString();
     }
 
+
+    /**
+     * 自拼写sql
+     *
+     * @param context
+     * @param entity
+     * @return
+     */
+    public String select(ProviderContext context, BaseQueryEntity entity) {
+        Class clazz = ProviderUtils.getEntityClass(context);
+
+        SQL sql = new SQL();
+        if (entity.getDistinctCon()) {
+            sql.SELECT_DISTINCT(entity.getSelectColumns());
+        } else {
+            sql.SELECT(entity.getSelectColumns());
+        }
+        sql.FROM(ProviderUtils.getTableName(clazz));
+        sql.WHERE(entity.getWhereCon());
+
+        return sql.toString();
+    }
+
+    public String selectCount(ProviderContext context, Query query) {
+        Class clazz = ProviderUtils.getEntityClass(context);
+        return new SQL()
+                .SELECT("count(1)")
+                .FROM(ProviderUtils.getTableName(clazz))
+                .WHERE(ProviderUtils.getWheres(query, clazz))
+                .toString();
+    }
+
     public String select(ProviderContext context, Query query) {
         StringBuilder sql = new StringBuilder(selectAll(context, query));
         JSONObject queryObj = ProviderUtils.parseObject(query);
@@ -110,8 +143,7 @@ public class BaseSelectProvider extends BaseProvider {
         return sql.toString();
     }
 
-
-    public String selectAll(ProviderContext context, Query query) {
+    private String selectAll(ProviderContext context, Query query) {
         Class clazz = ProviderUtils.getEntityClass(context);
         assert clazz != null;
         StringBuilder sql = new StringBuilder(new SQL()
@@ -127,15 +159,5 @@ public class BaseSelectProvider extends BaseProvider {
             }
         }
         return sql.toString();
-    }
-
-    public String selectCount(ProviderContext context, Query query) {
-        Class clazz = ProviderUtils.getEntityClass(context);
-        assert clazz != null;
-        return new SQL()
-                .SELECT("count(*)")
-                .FROM(ProviderUtils.getTableName(clazz))
-                .WHERE(ProviderUtils.getWheres(query, clazz))
-                .toString();
     }
 }

@@ -5,8 +5,6 @@ import org.luvx.common.provider.BaseDeleteProvider;
 import org.luvx.common.provider.BaseInsertProvider;
 import org.luvx.common.provider.BaseSelectProvider;
 import org.luvx.common.provider.BaseUpdateProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.Serializable;
 import java.util.Collection;

@@ -3,6 +3,7 @@ package org.luvx.entity;
 import lombok.*;
 import org.luvx.common.annotations.Table;
 import org.luvx.common.annotations.TableId;
+import org.luvx.common.base.BaseQueryEntity;
 
 import java.io.Serializable;
 
@@ -12,7 +13,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Table("user")
-public class User implements Serializable {
+public class User extends BaseQueryEntity
+        implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId("user_id")

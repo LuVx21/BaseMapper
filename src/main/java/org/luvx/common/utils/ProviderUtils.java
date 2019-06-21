@@ -17,10 +17,7 @@ import org.springframework.core.ResolvableType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @ClassName: org.luvx.common.utils
@@ -29,6 +26,41 @@ import java.util.Objects;
  * @Date: 2019/5/27 19:09
  */
 public class ProviderUtils {
+
+    /**
+     * 对象转map
+     * key: 属性名
+     * value: 属性值
+     *
+     * @param object
+     * @return
+     */
+    public static Map<String, Object> beanToMap(Object object) {
+        final Map<String, Object> map = new LinkedHashMap<>();
+
+        for (Class clazz = object.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                Ignore ignore = field.getAnnotation(Ignore.class);
+                if (ignore != null) {
+                    continue;
+                }
+                String fieldName = field.getName();
+                field.setAccessible(true);
+                Object value;
+                try {
+                    value = field.get(object);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
+
+                map.put(fieldName, value);
+            }
+        }
+
+        return map;
+    }
+
     /**
      * to json 对象
      *

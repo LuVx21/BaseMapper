@@ -34,10 +34,10 @@ public abstract class BaseQuery<T> implements Query<T> {
     }
 
     public void setSort(String sort) {
-        this.sort = sort == null ? null : sort.toString();
+        this.sort = sort;
     }
 
     public void setOrder(String order) {
-        this.order = order == null ? null : order.toString();
+        this.order = order;
     }
 }

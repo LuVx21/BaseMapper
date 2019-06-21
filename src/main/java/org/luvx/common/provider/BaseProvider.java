@@ -51,10 +51,11 @@ public abstract class BaseProvider {
     }
 
     /**
+     * where条件:单条件查询用
      *
      * @return
      */
-    SQL makeWhere(SQL sql,Object record ){
+    SQL makeWhere(SQL sql, Object record) {
         Set<Map.Entry<String, Object>> entrySet = ProviderUtils.parseObject(record).entrySet();
         for (Map.Entry<String, Object> entry : entrySet) {
             String key = entry.getKey();
